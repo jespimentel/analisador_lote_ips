@@ -1,4 +1,5 @@
 import os
+import re
 import PyPDF2
 from litellm import completion
 from dotenv import load_dotenv
@@ -21,6 +22,15 @@ def ler_pdf(caminho_pdf):
             texto += pagina.extract_text() + "\n\n"
     return texto
 
+def limpar_texto(texto):
+  # Remover a assinatura
+  padrao_assinatura = r"Este documento .*?fls\. \d+"
+  texto = re.sub(padrao_assinatura, "", texto, flags=re.DOTALL)
+  # Remover sequências de números e barras
+  padrao_sequencias = r"\/[j\d]+ (?:\/[j\d]+)+"
+  texto_limpo = re.sub(padrao_sequencias, "", texto)
+  return texto_limpo
+
 def analisar_conteudo (texto, prompt, modelo, api_key):
   try:
     resultado = completion(
@@ -31,20 +41,24 @@ def analisar_conteudo (texto, prompt, modelo, api_key):
                 {"role": "user", "content": f"**Instruções:**\n {prompt}"}],
                 api_key=api_key
     )
-    return resultado
-  except:
+    return resultado.get('choices', [{}])[0].get('message', {}).get('content', 'Sem resposta.')
+  except Exception as e:
+    print(f"Erro: {e}")
     return None
 
 def gerar_markdown(texto, nome_arquivo="analises.md"):
   modo = 'a' if os.path.exists(nome_arquivo) else 'w'
   try:
     with open(nome_arquivo, modo, encoding='utf-8') as arquivo:
+      if modo == 'w':
+        arquivo.write("# PROMOTORIA DE JUSTIÇA DE PIRACICABA\n")
+        arquivo.write("**Análise automatizada de inquéritos policiais**\n\n")
       arquivo.write(texto)
   except Exception as e:
     print(f"Erro ao salvar o arquivo: {e}")
 
 prompt = f"""
-    Extraia as seguintes informações do texto fornecido. Inclua os números de páginas de onde foram extraídas.
+    Extraia as seguintes informações do texto fornecido. Inclua os números de páginas de onde foram extraídas. Despreze as páginas sem informação compreensível.
 
     **Informações gerais:**
     * Número do procedimento no padrão CNJ
@@ -73,17 +87,17 @@ if __name__ == "__main__":
     diretorio_pdfs = "pdfs"
     
     modelo = "gpt-4o-mini"
-    api_key = os.getenv('API_KEY')
+    api_key = os.getenv('API_OPENAI')
+    
     #modelo = 'deepseek/deepseek-chat'
-    #api_key = os.getenv('API_SECRET')
-
-    conteudo = "PROMOTORIA DE JUSTIÇA DE PIRACICABA\n"
-    conteudo += "**Análise automatizadas de Inquéritos Policiais**\n\n"
+    #api_key = os.getenv('API_DEEPSEEK')
 
     pdfs = listar_pdfs(diretorio_pdfs)
+    conteudo = ""
     for pdf in pdfs:
         texto = ler_pdf(pdf)
-        resultado = analisar_conteudo(texto, prompt, modelo, api_key)
+        texto_limpo = limpar_texto(texto)
+        resultado = analisar_conteudo(texto_limpo, prompt, modelo, api_key)
         if resultado:
             conteudo += f"\n**Arquivo:** {pdf}\n\n"
             conteudo += resultado.get('choices', [{}])[0].get('message', {}).get('content', 'Sem resposta.')
