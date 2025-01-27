@@ -51,9 +51,10 @@ def gerar_markdown(texto, nome_arquivo="analises.md"):
   try:
     with open(nome_arquivo, modo, encoding='utf-8') as arquivo:
       if modo == 'w':
-        arquivo.write("# PROMOTORIA DE JUSTIÇA DE PIRACICABA\n")
-        arquivo.write("**Análise automatizada de inquéritos policiais**\n\n")
-      arquivo.write(texto)
+        arquivo.write("# PROMOTORIA DE JUSTIÇA DE PIRACICABA\n\n")
+        arquivo.write(texto)
+      else:
+         arquivo.write(texto)
   except Exception as e:
     print(f"Erro ao salvar o arquivo: {e}")
 
@@ -100,7 +101,7 @@ if __name__ == "__main__":
         resultado = analisar_conteudo(texto_limpo, prompt, modelo, api_key)
         if resultado:
             conteudo += f"\n**Arquivo:** {pdf}\n\n"
-            conteudo += resultado.get('choices', [{}])[0].get('message', {}).get('content', 'Sem resposta.')
+            conteudo += resultado
             conteudo += "\n___________________________________\n" 
             print(conteudo)
             gerar_markdown(conteudo)
