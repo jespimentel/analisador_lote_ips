@@ -30,5 +30,23 @@ Observe o número máximo de tokens dos modelos selecinados.
 
 Faça sempre uma avaliação de custo-benefício do modelo escolhido.
 
+## Apresentação do relatório
+O relatório é formatado em `markdown`, que se integra muito bem às LLMs.
+
+Se você vai repassar o relatório, considere acrescentar as seguintes linhas ao código:
+```bash
+pip install pypandoc
+```
+
+```python
+import pypandoc
+pypandoc.convert_file('arquivo.md', 'pdf', outputfile='arquivo.pdf')
+```
+Você tem que ter o executável do `pandoc` no seu sistema (adicionado à variável `PATH` do sistema).
+
+Outra opção é usar a extensão `Markdown PDF` do VS Code e fazer a exportação manual.
+
 ## Aprendendo?
-Então, use o Google Colab.
+Então, use o Google Colab e faça as alterações do código pelo navegador. 
+
+Vou deixar no meu GitHub uma versão adaptada deste programa.
