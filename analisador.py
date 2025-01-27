@@ -108,4 +108,4 @@ if __name__ == "__main__":
             print(conteudo)
             gerar_markdown(conteudo)
         else:
-            print(f"Não foi possível obter o resultado do {pdf}.")
+            print(f"Não foi possível obter o resultado de {pdf}.")
