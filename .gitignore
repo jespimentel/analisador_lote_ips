@@ -170,5 +170,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Outras pastas
+# Outros arquivos e pastas
 pdfs/
+analises.md 
+analises.pdf 

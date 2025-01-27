@@ -39,7 +39,9 @@ def analisar_conteudo (texto, prompt, modelo, api_key):
                 {"role": "system", "content": "Trabalhe somente com texto fornecido com o prompt. Não alucine."},
                 {"role": "user", "content": f"**Texto do PDF:**\n\n{texto}"},
                 {"role": "user", "content": f"**Instruções:**\n {prompt}"}],
-                api_key=api_key
+                api_key=api_key,
+                temperature=0.3,
+                #max_tokens=5000,
     )
     return resultado.get('choices', [{}])[0].get('message', {}).get('content', 'Sem resposta.')
   except Exception as e:
