@@ -61,36 +61,42 @@ def gerar_markdown(texto, nome_arquivo="analises.md"):
     print(f"Erro ao salvar o arquivo: {e}")
 
 prompt = f"""
-    Extraia as seguintes informações do texto fornecido. Inclua os números de páginas de onde foram extraídas. Despreze as páginas sem informação compreensível.
+    - Extraia as seguintes informações do texto fornecido. 
+    - Inclua os números de páginas de onde as informações foram extraídas. 
+    - Para compor as respostas, despreze as páginas sem informação ou incompreensíveis.
+    - Não invente nenhuma informação (não alucine).
 
-    **Informações gerais:**
-    * Número do procedimento no padrão CNJ
-    * Data, hora e local da ocorrência
-    * Crime que está sendo apurado e dispositivo legal correspondente
-    * Indiciado(s) e sua(s) conduta(s)
-    * Vítima(s) e testemunha(s) com seus respectivos relatos
+    **Informações gerais**
+    * Número do procedimento no padrão CNJ:
+    * Data, hora e local da ocorrência:
+    * Crime que está sendo apurado e dispositivo legal correspondente:
+    * Indiciado(s) e sua(s) conduta(s):
+    * Vítima(s) e testemunha(s) com seus respectivos relatos:
 
-    **Laudo:**
-    * Resumo dos dados relevantes do laudo
-    * Tipos e quantidades de drogas apreendidas (se aplicável)
+    **Laudo**
+    * Resumo dos dados relevantes do laudo (se aplicável):
+    * Tipos e quantidades de drogas apreendidas (se aplicável):
 
-    **Avaliação da prova:**
-    * Classifique a prova como "boa" ou "fraca"
-    * Justifique essa classificação
+    **Avaliação da prova**
+    * Classifique a prova como "boa" ou "fraca":
+    * Justifique sua classificação:
 
-    **Dúvidas e verificação:**
-    * Liste as dúvidas que você teve ao gerar o resumo
-    * Verifique se todos os dados fornecidos estão no PDF e evite alucinações
+    **Dúvidas e verificação**
+    * Liste as dúvidas que você teve ao gerar o resumo:
+    * Verifique se todos os dados fornecidos estão no PDF e confirme:
 
     **Resumo do caso**
-    * Forneça um resumo, em 2 ou 3 parágrafos. Indique data, hora, local, indiciado, conduta e toda informação juridicamente relevante.
+    * Forneça um resumo, em 2 ou 3 parágrafos. Indique data, hora, local, indiciado(s), conduta(s) e toda informação juridicamente relevante:
     """
 
 if __name__ == "__main__":
     diretorio_pdfs = "pdfs"
     
-    modelo = "gpt-4o-mini"
-    api_key = os.getenv('API_OPENAI')
+    #modelo = "gpt-4o-mini"
+    #api_key = os.getenv('API_OPENAI')
+
+    modelo = 'gemini/gemini-1.5-flash'
+    api_key = os.getenv('API_GOOGLE')
     
     #modelo = 'deepseek/deepseek-chat'
     #api_key = os.getenv('API_DEEPSEEK')
