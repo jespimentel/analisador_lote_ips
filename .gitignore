@@ -172,5 +172,5 @@ cython_debug/
 
 # Outros arquivos e pastas
 pdfs/
-analises.md 
-analises.pdf 
+relatorio.md 
+relatorio.pdf 

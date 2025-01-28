@@ -35,12 +35,12 @@ def analisar_conteudo (texto, prompt, modelo, api_key):
   try:
     resultado = completion(
     model=modelo,
-    messages=[{"role": "system", "content": "Você é um promotor de justiça especializado em analisar inquéritos policiais."},
-                {"role": "system", "content": "Trabalhe somente com texto fornecido com o prompt. Não alucine."},
-                {"role": "user", "content": f"**Texto do PDF:**\n\n{texto}"},
+    messages=[{"role": "system", "content": "Você é um analista jurídico especializado em Direito Penal e Processo Penal."},
+                {"role": "system", "content": "Analise o inquérito policial com base somente no texto fornecido."},
+                {"role": "user", "content": f"**Texto extraído do inquérito policial:**\n\n{texto}"},
                 {"role": "user", "content": f"**Instruções:**\n {prompt}"}],
                 api_key=api_key,
-                temperature=0.3,
+                temperature=0.2,
                 #max_tokens=5000,
     )
     return resultado.get('choices', [{}])[0].get('message', {}).get('content', 'Sem resposta.')
@@ -48,7 +48,7 @@ def analisar_conteudo (texto, prompt, modelo, api_key):
     print(f"Erro: {e}")
     return None
 
-def gerar_markdown(texto, nome_arquivo="analises.md"):
+def gerar_markdown(texto, nome_arquivo="relatorio.md"):
   modo = 'a' if os.path.exists(nome_arquivo) else 'w'
   try:
     with open(nome_arquivo, modo, encoding='utf-8') as arquivo:
@@ -61,8 +61,8 @@ def gerar_markdown(texto, nome_arquivo="analises.md"):
     print(f"Erro ao salvar o arquivo: {e}")
 
 prompt = f"""
-    - Extraia as seguintes informações do texto fornecido. 
-    - Inclua os números de páginas de onde as informações foram extraídas. 
+    - Analise o inquérito policial de acordo com o texto fornecido. 
+    - Inclua na análise os números de páginas de onde as informações foram extraídas. 
     - Para compor as respostas, despreze as páginas sem informação ou incompreensíveis.
     - Não invente nenhuma informação (não alucine).
 
@@ -92,23 +92,22 @@ prompt = f"""
 if __name__ == "__main__":
     diretorio_pdfs = "pdfs"
     
-    #modelo = "gpt-4o-mini"
-    #api_key = os.getenv('API_OPENAI')
+    modelo = "gpt-4o-mini"
+    api_key = os.getenv('API_OPENAI')
 
-    modelo = 'gemini/gemini-1.5-flash'
-    api_key = os.getenv('API_GOOGLE')
+    #modelo = 'gemini/gemini-1.5-flash'
+    #api_key = os.getenv('API_GOOGLE')
     
     #modelo = 'deepseek/deepseek-chat'
     #api_key = os.getenv('API_DEEPSEEK')
 
     pdfs = listar_pdfs(diretorio_pdfs)
-    conteudo = ""
     for pdf in pdfs:
         texto = ler_pdf(pdf)
         texto_limpo = limpar_texto(texto)
         resultado = analisar_conteudo(texto_limpo, prompt, modelo, api_key)
         if resultado:
-            conteudo += f"\n**Arquivo:** {pdf}\n\n"
+            conteudo = f"\n**Arquivo:** {pdf}\n\n"
             conteudo += resultado
             conteudo += "\n___________________________________\n" 
             print(conteudo)

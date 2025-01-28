@@ -5,8 +5,8 @@ O programa emprega o poder do Python e das LLMs, mediadas pela biblioteca `litel
 
 ## Estratégias
 1. Usamos o `PyPDF` para extrair textos dos PDFs. Preservamos a numeração das páginas para referenciar as respostas.
-2. O texto extraído compõe um extenso prompt, com as perguntas à LLM dirigidas à analise de cada caso.
-3. Importante: **a biblioteca `litellm` facilitou o desenvolvimento e abstraiu toda a complexidade das chamadas a APIs. Com ela, é muito fácil substituir um provedor de LLM por outro.** 
+2. O texto extraído dos PDFs compõe o prompt, com as perguntas à LLM dirigidas à analise de cada caso.
+3. A biblioteca `litellm` facilitou o desenvolvimento e abstraiu toda a complexidade das chamadas a APIs. Com ela, é fácil substituir um provedor de LLM por outro.
 
 ## Intalações necessárias
 - ```pip install PyPDF2 litellm python-dotenv```
@@ -26,9 +26,9 @@ LLMs ainda alucinam bastante.
 O emprego da ferramenta no campo profissional deve ser avaliado caso a caso.
 
 ## Restrições
-Observe o número máximo de tokens dos modelos selecinados. 
+Observe o número máximo de tokens do modelo selecinado. 
 
-Faça sempre uma avaliação de custo-benefício do modelo escolhido.
+Faça sempre uma avaliação de custo-benefício.
 
 ## Apresentação do relatório
 O relatório é formatado em `markdown`, que se integra muito bem às LLMs.
@@ -42,7 +42,7 @@ pip install pypandoc
 import pypandoc
 pypandoc.convert_file('arquivo.md', 'pdf', outputfile='arquivo.pdf')
 ```
-Você tem que ter o executável do `pandoc` no seu sistema (adicionado à variável `PATH` do sistema).
+Observação: Você deve ter o executável do `pandoc` no seu sistema (adicionado à variável `PATH` do sistema).
 
 Outra opção é usar a extensão `Markdown PDF` do VS Code e fazer a exportação manual.
 
