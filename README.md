@@ -49,4 +49,4 @@ Outra opção é usar a extensão `Markdown PDF` do VS Code e fazer a exportaç�
 ## Aprendendo?
 Então, use o Google Colab e faça as alterações do código pelo navegador. 
 
-Vou deixar no meu GitHub uma versão adaptada deste programa.
+Confira em: <https://github.com/jespimentel/analisador_lote_ip_colab>.
